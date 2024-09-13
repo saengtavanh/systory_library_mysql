@@ -1,0 +1,76 @@
+.add-content {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+}
+
+.add-content .group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  margin: .5rem;
+}
+
+.add-content .group-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.add-content table th {
+  background: #099c97;
+}
+
+.add-content button.submit {
+  /* font-family: Inter, sans-serif; */
+  border-radius: 5px;
+  width: 15%;
+  border: 2px solid #099c97;
+  background-color: #fff;
+  color: #8e0c0c;
+  font-weight: 600;
+  text-align: center;
+  justify-content: center;
+  padding: 8px 14px;
+  margin-left: 0.5rem;
+  /* border: none !important; */
+  cursor: pointer;
+  transition: ease-in-out, width .35s ease-in-out;
+}
+
+.add-content button.submit:hover {
+  background-color: #099c97;
+  color: #fff;
+  transition: ease-in-out, width .35s ease-in-out;
+}
+
+.add-content .kintoneplugin-table {
+  margin: 0;
+}
+
+.add-content .kintoneplugin-input-text {
+  width: 230%;
+  /* width: 172%; */
+}
+
+.add-content .kintoneplugin-button-add-row-image {
+  margin-left: 12px;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAABG0lEQVQ4ja2UMWrDUAyG31TIAUIO0cVbCMToHa0nyF4HqbtPkBPkAqEe/KQ4bclkCB06FDqoQ7Cb5j2/l1L/oMFY/pB+SzImoZzc1BZ1lpObpnKDsihLICkBubIohy4AuQKS0qIsk5DFajsBdAQo+0vIdQBJA+hosdpOgqD7h+c7S7yJQbwg3gSBgPz4J1DfuqNrkyHR2vswTPY5Ofip6mzqQDIfVVUTHpaXLVb/giFXxhhj5uvdLJGYhFmUw3y9mxlb1Jn/kj81Ikvy4X1T1FmwMkB+A+QWkFsgOamq9s/ILRC/Bisb1bPR/2ZszoDkBZC/bp6zc6uORtmAbslH281fV4OkSXjUAPLTIMjb1cg98zy6Vd2l7ecoom+t8LKwzLF7UgAAAABJRU5ErkJggg==) center center no-repeat;
+  border: 1px solid transparent;
+  /* filter: opacity(0.3) drop-shadow(0 0 0 #099c97); */
+  filter: brightness(0.5) opacity(0.3) drop-shadow(0 0 0 #099c97);
+  filter: grayscale(90%);
+}
+
+.add-content .kintoneplugin-button-add-row-image:hover {
+  /* margin-left: 12px; */
+  /* filter: opacity(0.5) drop-shadow(0 0 0 #099c97); */
+  filter: brightness(0.5) opacity(0.5) drop-shadow(0 0 0 #099c97);
+}

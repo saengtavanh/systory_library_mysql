@@ -1,0 +1,276 @@
+/* Add this CSS to your existing styles */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+html {
+  scroll-behavior: smooth; /* Enable smooth scrolling for the whole page */
+}
+*{
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+}
+.content-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: auto;
+  z-index: 100;
+  margin-left: 20%;
+  margin-top: 5%;
+  padding: 10px 20px;
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+}
+
+.main-content{
+  width: 75%;
+  max-width: 75%;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+}
+
+.main-content .show-img{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.main-content .libraly-img{
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 2rem;
+}
+
+.main-content h4{
+  margin: 0;
+  text-indent: 5px;
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+}
+
+.table-of-content{
+  width: 75%;
+  display: flex;
+  z-index: 1;
+  /* height: 30vh;
+  max-height: 30vh;
+  overflow-y: auto; */
+  flex-direction: column;
+  position: fixed;
+  align-items: flex-end;
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+}
+.table-of-content h5{
+  width: 18%;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+}
+
+.table-of-content .content-list{
+  /* padding-left: 1rem; */
+  width: 17%;
+  max-width: 17%;
+  height: 40vh;
+  max-height: 40vh;
+  overflow-y: auto;
+  word-wrap: break-word;
+  white-space: normal;    /* Allow wrapping */
+  font-size: 14px;
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+}
+.table-of-content .content-list .list-item{
+  list-style-type: none;
+  padding: 5px 2px;
+  cursor: pointer;
+  color: #2f2f2f;
+  font-weight: 100;
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+}
+.table-of-content .content-list .list-item a {
+  color: inherit; /* Inherit text color from parent */
+  text-decoration: none; /* Remove underline from links */
+  transition: color 0.3s; /* Smooth color transition on hover */
+  font-family: "Fira Sans Condensed", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.table-of-content .content-list .list-item a:hover {
+  color: rgb(76, 76, 255); /* Change color on hover */
+}
+/* @media (max-width: 991px) {
+  .main-content {
+      width: 100%;
+      margin-top: 40px;
+  }
+} */
+
+.section {
+  font-family: "Fira Sans Condensed", sans-serif;
+  width: 95%;
+  max-width: 95%;
+  /* font-weight: 100; */
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+.section p {
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+  margin-top: 0;
+  padding: 5px 0px 3px 0px;
+}
+.section-header {
+  color: #000;
+  font: 700 22px "Fira Sans Condensed", sans-serif;
+}
+.section-description {
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+  color: #000;
+  /* font-family: Inter, sans-serif; */
+  font-weight: 400;
+  text-indent: 10px;
+  word-wrap: break-word; /* Break long words to fit within the container */
+  overflow-wrap: break-word; /* Ensure text breaks appropriately */
+  /* width: 75%; Ensure the width is restricted to the container */
+  /* margin-top: 29px; */
+}
+
+.link{
+  color: #3498db;
+  /* text-indent: 10px; */
+  text-decoration: none;
+  padding-bottom: 2.5px;
+  padding-top: 2.5px;
+}
+.link:hover{
+  color: #2171a7;
+}
+
+.link-group{
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  padding: 10px;
+  border-color: #d8d8d8;
+  border-width: 1px;
+  border-style: solid;
+  padding: 4px 8px;
+  background-color: #eee;
+  word-wrap: break-word;
+}
+
+.link-item{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+
+
+.section-text {
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+  color: #000;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  margin-top: 7px;
+}
+.underline {
+  text-decoration: underline;
+  margin-top: 7px;
+}
+.divider {
+  border: 0.1px solid rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.1);
+  margin-top: 17px;
+  margin-bottom: 1rem;
+  width: 100%;
+  /* height: 1px; */
+}
+
+.installation {
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+  border-radius: 5px;
+  background-color: #2f2f2f;
+  display: flex;
+  margin-top: 23px;
+  flex-direction: column;
+  padding-bottom: 18px;
+}
+.code-block {
+  border-radius: 5px;
+  background-color: #d9d9d9;
+  display: flex;
+  gap: 20px;
+  color: #000;
+  padding: 8px 80px 8px 8px;
+  align-items: center;
+}
+.code-label {
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+}
+.copy-button {
+  display: flex;
+  gap: 1px;
+}
+.code-description {
+  color: #fff;
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+  margin-top: 16px;
+}
+.code-key {
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+  font-weight: 500;
+}
+.code-attribute {
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+  font-weight: 500;
+  color: #df3079;
+}
+.code-value {
+  font-family: "Fira Sans Condensed", sans-serif;
+  /* font-weight: 100; */
+  font-style: normal;
+  font-weight: 500;
+  color: #00a67d;
+}
+.visually-hidden {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}

@@ -1,0 +1,113 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 18%;
+  /* height: auto; */
+  height: 92%;
+  max-height: 92%;
+  margin: 0;
+  margin-top: 4%;
+  position: fixed;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  /* box-shadow: 4px 0px 3px 0px rgba(0,0,0,0.1);
+  -webkit-box-shadow: 4px 0px 3px 0px rgba(0,0,0,0.1);
+  -moz-box-shadow: 4px 0px 3px 0px rgba(0,0,0,0.1); */
+  overflow-y: auto;
+}
+/* @media (max-width: 991px) {
+  .sidebar {
+      width: 100%;
+      margin-top: 40px;
+  }
+} */
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 500;
+  /* height: 100%;
+  min-height: 100%; */
+}
+
+.sidebar-content input[type=text]{
+  /* font-family: Inter, sans-serif; */
+  margin-top: 0;
+  margin-left: 5px;
+  margin-bottom: 5px;
+  width: 85%;
+  color: black;
+  background-color: transparent;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  justify-content: center;
+  padding: 9px 18px;
+  transition: ease-in-out, width .35s ease-in-out;
+}
+.sidebar-content input[type=text]:focus{ 
+  /* width: 15rem; */
+  /* width: 85%; */
+  outline: 1px solid rgb(55, 135, 255);
+}
+
+.library-list {
+  /* border: 1px solid #3a3a3a; */
+  /* background-color: #fff; */
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  padding: 6px;
+  padding-left: 0px;
+}
+.library-item {
+  display: flex;
+  gap: 2px;
+  color: #000;
+  text-decoration: none;
+  padding: 5px;
+  padding-left: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.18);
+}
+.library-item:first-child {
+  border-top: none;
+}
+
+.library-item:hover .library-label {
+  background-color: #eeeeee;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.library-item.selected
+.library-indicator {
+  background-color: rgb(212, 67, 67);
+}
+
+.library-item.selected
+.library-label {
+  background-color: #eeeeee;
+  border-radius: 8px;
+}
+
+.library-indicator {
+  border-radius: 2px;
+  height: 26px;
+  margin: auto 0;
+  width: 5px;
+  background-color: transparent;
+}
+.library-label {
+  /* font-family: Inter, sans-serif; */
+  /* border-radius: 8px; */
+  background-color: transparent;
+  /* justify-content: center; */
+  padding: 5px 10px;
+  width: 100%;
+}
+/* .library-divider {
+  border: 0.1px solid rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+  height: 2px;
+} */
