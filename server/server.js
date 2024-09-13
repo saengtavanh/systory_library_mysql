@@ -16,7 +16,8 @@ app.use(cors());
 app.use(express.json());
 
 const conn = mysql2.createConnection({
-  host: 'localhost',
+  host: '192.168.101.199',
+  port: 3306,
   user: 'root',
   password: '',
   database: 'mysql-api'
@@ -88,7 +89,7 @@ const storage = multer.diskStorage({
 // Initialize upload variable
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 500000000 } // 500MB limit
+  limits: { fileSize: 500000000 } 
 }).fields([
   { name: 'files', maxCount: 10 },
   { name: 'image', maxCount: 10 }
@@ -182,8 +183,9 @@ app.get('/files/:filename', (req, res) => {
 });
 
 // Update route to handle array file upload
-app.put('/Update/Data', upload, async (req, res) => {
+app.put('/Update/Data/:id', upload, async (req, res) => {
   try {
+    const { id } = req.params;
     let image = '';
     const imageFile = req.files ? req.files.image[0] : [];
     const oldImagePath = path.join(__dirname, '../server/src/uploads/', imageFile.originalname);
@@ -257,7 +259,8 @@ app.put('/Update/Data', upload, async (req, res) => {
                 ATTRACHMENT = :ATTRACHMENT, 
                 INSTALLATION = :INSTALLATION, 
                 HOWTOUSE = :HOWTOUSE, 
-                EXAMPLE = :EXAMPLE`;
+                EXAMPLE = :EXAMPLE
+                WHERE LIB_ID = ${id}`;
 
     conn.execute(sql, libraryData, async (err, response) => {
       if (err) {

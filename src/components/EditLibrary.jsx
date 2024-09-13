@@ -274,7 +274,7 @@ function EditLibrary({ records }) {
     formData.append("record", JSON.stringify(record));
     try {
       await axios
-        .put(`${IP_ADDRESS}/Update/Data`, formData, {
+        .put(`${IP_ADDRESS}/Update/Data/${libraryData.LIB_ID}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
