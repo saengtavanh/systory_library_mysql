@@ -38,6 +38,7 @@ const Login = (props) => {
         userInput,
         password,
       });
+      console.log("response");
       console.log(response);
       let user = response.data;
       console.log(user);
