@@ -87,7 +87,7 @@ function EditLibrary({ records }) {
 
     const fetchData = async () => {
       try {
-        let fileArray = JSON.parse(libraryData.ATTRACHMENT);
+        let fileArray = libraryData.ATTRACHMENT;
         // Set files with the details
         setFiles(await getRawFile(fileArray, 'files'));
         // Set files with the details
@@ -107,12 +107,12 @@ function EditLibrary({ records }) {
       setOverviewDes(libraryData.DESCRIPTIONS_OVER || "");
       setSuggestionDes(libraryData.DESCRIPTIONS_SGT || "");
 
-      setRowsInstallations(JSON.parse(libraryData.INSTALLATION));
-      setIdCounterInstallation(JSON.parse(libraryData.INSTALLATION).length + 1);
-      setRowsHowToUse(JSON.parse(libraryData.HOWTOUSE));
-      setIdCounterHowToUse(JSON.parse(libraryData.HOWTOUSE).length + 1);
-      setRowsExamPle(JSON.parse(libraryData.EXAMPLE));
-      setIdCounterExamPle(JSON.parse(libraryData.EXAMPLE).length + 1);
+      setRowsInstallations(libraryData.INSTALLATION);
+      setIdCounterInstallation(libraryData.INSTALLATION.length + 1);
+      setRowsHowToUse(libraryData.HOWTOUSE);
+      setIdCounterHowToUse(libraryData.HOWTOUSE.length + 1);
+      setRowsExamPle(libraryData.EXAMPLE);
+      setIdCounterExamPle(libraryData.EXAMPLE.length + 1);
       fetchData();
     }
   }, [libraryData]);
