@@ -11,7 +11,7 @@ import ImageInput from "./ImageInput";
 
 function EditLibrary({ records }) {
   const navigate = useNavigate();
-  const IP_ADDRESS = import.meta.env.VITE_IP_ADDRESS;
+  const IP_ADDRESS = process.env.VITE_IP_ADDRESS;
 
   useEffect(() => {
     const isLoggedIn = sessionStorage.getItem("username");
@@ -221,10 +221,6 @@ function EditLibrary({ records }) {
   }, []);
 
   function onChangeFile(files) {
-    console.log("retriveFile:", files);
-    for (let [key, value] of files.entries()) {
-      // console.log(key, value);
-    }
     setFiles(files);
   }
 
@@ -279,9 +275,6 @@ function EditLibrary({ records }) {
             "Content-Type": "multipart/form-data",
           },
         })
-        .then((response) => {
-          console.log(response);
-        });
       window.location.reload();
       window.location.href = `/content?id=${id}`;
     } catch (err) {

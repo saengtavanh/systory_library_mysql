@@ -5,11 +5,9 @@ const ImageInput = (props) => {
   const inputRef = useRef();
 
   const [selectedImage, setSelectedImage] = useState(null);
-  // console.log("iiioio",selectedImage);
   useEffect(() => {
     if (props.initialImage) {
       for (let [key, value] of props.initialImage.entries()) {
-        // console.log(key, value);
         setSelectedImage(value);
       }
       

@@ -28,6 +28,7 @@ conn.config.namedPlaceholders = true;
 app.get('/', async (req, res) => {
   try {
     let sql = `SELECT * FROM librarys`;
+    console.log("jdhfgbjdfhgb");
     conn.execute(sql, (err, rows) => {
       if (err) {
         res.status(500).json({
@@ -35,6 +36,7 @@ app.get('/', async (req, res) => {
         });
         return;
       }
+      console.log('rows:', rows);
 
       res.status(200).json(rows);
     });

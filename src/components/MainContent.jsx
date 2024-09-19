@@ -11,22 +11,13 @@ function MainContent({ records }) {
   const [howToUse, setHowToUse] = useState([]);
   const [example, setExample] = useState([]);
   const [loading, setLoading] = useState(false);
-  const IP_ADDRESS = import.meta.env.VITE_IP_ADDRESS;
-  // let INSTALLATION = [];
 
   const location = useLocation();
-  // console.log('location', location);
   const query = new URLSearchParams(location.search);
-  // console.log('query', query);
   const LibraryId = query.get("id");
-  // console.log('LibraryName', LibraryName);
-  console.log(records);
   let libraryData = records
     ? records.find((item) => item.LIB_ID == LibraryId)
     : null;
-  // let libraryData = records.find((item) => item.LIB_ID == LibraryId);
-  console.log("libraryData", libraryData);
-  // setAttrachment((libraryData.ATTRACHMENT).split("||"));
   
   if (!libraryData) {
     return;
@@ -49,52 +40,10 @@ function MainContent({ records }) {
 
   
   useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     // Parse the ATTRACHMENT data
-        if(libraryData.ATTRACHMENT) setAttrachment(JSON.parse(libraryData.ATTRACHMENT));
-  
-    //     // Define dynamic functions to fetch data for different tables
-    //     const fetchInstallation = async () => {
-    //       const response = await axios.get(`${IP_ADDRESS}/getInstallation/${LibraryId}`);
-    //       return response.data;
-    //     };
-  
-    //     const fetchHowToUse = async () => {
-    //       const response = await axios.get(`${IP_ADDRESS}/getHowToUse/${LibraryId}`);
-    //       return response.data;
-    //     };
-  
-    //     const fetchExample = async () => {
-    //       const response = await axios.get(`${IP_ADDRESS}/getExample/${LibraryId}`);
-    //       return response.data;
-    //     };
-  
-    //     // Fetch all data in parallel
-    //     const [installationData, howToUseData, exampleData] = await Promise.all([
-    //       fetchInstallation(),
-    //       fetchHowToUse(),
-    //       fetchExample(),
-    //     ]);
-  
-    //     // Log or set the data to state
-    //     console.log('INSTALLATION:', installationData);
-    //     console.log('HOWTOUSE:', howToUseData);
-    //     console.log('EXAMPLE:', exampleData);
-  
-    //     // If you need to store the data in the state, you can do so here
-        setInstallation(JSON.parse(INSTALLATION));
-        setHowToUse(JSON.parse(HOWTOUSE));
-        setExample(JSON.parse(EXAMPLE));
-        console.log('installation', installation);
-  
-    //   } catch (error) {
-    //     console.error('Error fetching data:', error);
-    //   }
-    // };
-  
-    // Call the async function
-    // fetchData();
+      if(libraryData.ATTRACHMENT) setAttrachment(libraryData.ATTRACHMENT);
+        setInstallation(INSTALLATION);
+        setHowToUse(HOWTOUSE);
+        setExample(EXAMPLE);
   }, [libraryData]);
 
   function formatFileSize(bytes) {

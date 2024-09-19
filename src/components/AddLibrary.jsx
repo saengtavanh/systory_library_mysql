@@ -1,4 +1,3 @@
-// import * as React from 'react';
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../common/51-modern-default.css";
@@ -9,7 +8,7 @@ import ImageInput from "./ImageInput";
 
 function AddLibrary() {
   const navigate = useNavigate();
-  const IP_ADDRESS = import.meta.env.VITE_IP_ADDRESS;
+  const IP_ADDRESS = process.env.VITE_IP_ADDRESS;
 
   useEffect(() => {
     const isLoggedIn = sessionStorage.getItem("username");
@@ -158,7 +157,6 @@ function AddLibrary() {
     setImage(image);
   }
   function onRemoveImage(image) {
-    console.log("imageupdate", image);
     setImage(image);
   }
 
@@ -198,9 +196,6 @@ function AddLibrary() {
             "Content-Type": "multipart/form-data",
           },
         })
-        .then((response) => {
-          console.log( "res",response);
-        });
         window.location.reload();
     } catch (err) {
       console.error("Error uploading file client 4454545:", err);

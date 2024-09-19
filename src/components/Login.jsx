@@ -7,8 +7,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/systory-logo.png";
 
 const Login = (props) => {
-  const IP_ADDRESS = import.meta.env.VITE_IP_ADDRESS;
-  console.log(IP_ADDRESS);
+  const IP_ADDRESS = process.env.VITE_IP_ADDRESS;
   const [userInput, setUserInput] = useState(null);
   const [password, setPassword] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -38,10 +37,7 @@ const Login = (props) => {
         userInput,
         password,
       });
-      console.log("response");
-      console.log(response);
       let user = response.data;
-      console.log(user);
       if (user.length > 0) {
         sessionStorage.setItem("username", user[0].name);
         sessionStorage.setItem("admin", user[0].role);

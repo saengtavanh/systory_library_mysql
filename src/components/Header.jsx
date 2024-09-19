@@ -10,7 +10,7 @@ function Header({ records }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const IP_ADDRESS = import.meta.env.VITE_IP_ADDRESS;
+  const IP_ADDRESS = process.env.VITE_IP_ADDRESS;
   const query = new URLSearchParams(location.search);
   const LibraryId = query.get("id");
   let libraryData = records.find((item) => item.LIB_ID == LibraryId);
@@ -91,12 +91,7 @@ function Header({ records }) {
               icon: "error",
             })
             .then(() => {
-              // window.location.reload();
-              // Check when deleting records is to navigate to the first records
-              // if (records && records.length > 0) {
-              //   navigate(`/content?id=${libraryData}`);
-              // }
-              // window.location.href = `/content?id=${id}`;
+              window.location.reload();
             });
         }
         setLoading(false);

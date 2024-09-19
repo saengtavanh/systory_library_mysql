@@ -25,14 +25,13 @@ function App() {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showComponents, setShowComponents] = useState(false);
-  const IP_ADDRESS = import.meta.env.VITE_IP_ADDRESS;
+  const IP_ADDRESS = process.env.VITE_IP_ADDRESS;
 
   useEffect(() => {
     async function fetchRecords() {
       try {
         setLoading(true);
         const response = await axios.get(`${IP_ADDRESS}/`);
-        console.log(response.data);
         setRecords(response.data);
         
       } catch (error) {

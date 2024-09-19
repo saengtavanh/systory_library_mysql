@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 function SideBar({ records }) {
-  // console.log("sidebar", records);
   const [search, setSearch] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
