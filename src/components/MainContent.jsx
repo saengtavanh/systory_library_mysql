@@ -52,7 +52,7 @@ function MainContent({ records }) {
     // const fetchData = async () => {
     //   try {
     //     // Parse the ATTRACHMENT data
-        setAttrachment(JSON.parse(libraryData.ATTRACHMENT));
+        if(libraryData.ATTRACHMENT) setAttrachment(JSON.parse(libraryData.ATTRACHMENT));
   
     //     // Define dynamic functions to fetch data for different tables
     //     const fetchInstallation = async () => {
