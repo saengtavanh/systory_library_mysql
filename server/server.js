@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 import mysql2 from 'mysql2';
 
 const app = express();
-const port = 3001;
+const port = 3000;
 
 // Enable CORS for all routes
 app.use(cors());
@@ -23,6 +23,10 @@ const conn = mysql2.createConnection({
   database: 'mysql-api'
 });
 conn.config.namedPlaceholders = true;
+conn.connect((err) => {
+  if (err) throw err;
+  console.log('Connected to MySQL');
+});
 
 //todo Get all records
 app.get('/', async (req, res) => {
@@ -43,6 +47,29 @@ app.get('/', async (req, res) => {
     // Send the error message back to the client for debugging
     res.status(500).json({ error: 'Internal Server Error', details: error.message });
   }
+});
+
+app.get('/getLibrary/:id', async (req, res) => {
+
+  const { id } = req.params;
+  try {
+    let sql = `SELECT * FROM librarys INNER JOIN users ON librarys.CREATE_BY = users.id WHERE LIB_ID = '${id}'`;
+    conn.execute(sql, (err, rows) => {
+      if (err) {
+        res.status(500).json({
+          message: err.message
+        });
+        return;
+      }
+      res.status(200).json(rows);
+    });
+  } catch (error) {
+    console.error('Error fetching Kintone data:', error);
+
+    // Send the error message back to the client for debugging
+    res.status(500).json({ error: 'Internal Server Error', details: error.message });
+  }
+
 });
 
 //todo Get 1 record
@@ -88,7 +115,7 @@ const storage = multer.diskStorage({
 // Initialize upload variable
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 500000000 } 
+  limits: { fileSize: 500000000 }
 }).fields([
   { name: 'files', maxCount: 10 },
   { name: 'image', maxCount: 10 }
@@ -152,14 +179,168 @@ app.post('/addLibrary', upload, async (req, res) => {
       }
 
       const libraryInsertId = rows.insertId;
-        res.status(200).json({
-          message: 'success',
-          data: libraryInsertId
-        });
+      res.status(200).json({
+        message: 'success',
+        data: libraryInsertId
+      });
     })
   } catch (error) {
     // console.error('Error:', error);
     res.status(500).json(error);
+  }
+});
+
+app.post('/mobile_addLibrary', upload, async (req, res) => {
+  try {
+      const imageFile = req.files.image[0];
+      const files = req.files?.files || [];
+      const image = imageFile ? imageFile.filename : '';
+  
+      let attrachment = [];
+      await files.forEach(item => {
+        let file = {
+          filename: item.filename,
+          originalname: item.originalname,
+          size: item.size
+        };
+        attrachment.push(file);
+      });
+      
+  
+      const {
+        userName,
+        libraryName,
+        description,
+        reference,
+        overviewDes,
+        installationDes,
+        HowToUseDes,
+        exampleDes,
+        suggestionDes,
+        rowsInstallations,
+        rowsHowToUse,
+        rowsExample,
+      } = JSON.parse(req.body.data);
+  
+      const libraryData = {
+        LIB_NAME: libraryName,
+        DESCRIPTION: description,
+        REFERENCE: reference,
+        DESCRIPTIONS_OVER: overviewDes,
+        DESCRIPTIONS_INS: installationDes,
+        DESCRIPTIONS_HTU: HowToUseDes,
+        DESCRIPTIONS_EXP: exampleDes,
+        DESCRIPTIONS_SGT: suggestionDes,
+        IMAGE: image,
+        CREATE_BY: userName,
+        ATTRACHMENT: JSON.stringify(attrachment),
+        INSTALLATION: JSON.stringify(rowsInstallations),
+        HOWTOUSE: JSON.stringify(rowsHowToUse),
+        EXAMPLE: JSON.stringify(rowsExample)
+      }
+      const sql = `INSERT INTO librarys (LIB_NAME, DESCRIPTION, REFERENCE, DESCRIPTIONS_OVER, DESCRIPTIONS_INS, DESCRIPTIONS_HTU, DESCRIPTIONS_EXP, DESCRIPTIONS_SGT, IMAGE, CREATE_BY, ATTRACHMENT, INSTALLATION, HOWTOUSE, EXAMPLE)
+                  VALUES ('${libraryName}', '${description}', '${reference}', '${overviewDes}', '${installationDes}', '${HowToUseDes}', '${exampleDes}', '${suggestionDes}', '${image}', '${userName}', '${libraryData.ATTRACHMENT}', '${libraryData.INSTALLATION}', '${libraryData.HOWTOUSE}', '${libraryData.EXAMPLE}')`;
+
+
+      db.query(sql, (err, result) => {
+          if (err) throw err;
+          res.send('Library added');
+      });
+    } catch (error) {
+      // console.error('Error:', error);
+      res.status(500).json(error);
+    }
+});
+
+app.put('/mobile_update_library/:id', upload, async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Parse the rest of the data from req.body.data
+    const {
+      userName,
+      libraryName,
+      description,
+      reference,
+      overviewDes,
+      installationDes,
+      HowToUseDes,
+      exampleDes,
+      suggestionDes,
+      rowsInstallations,
+      rowsHowToUse,
+      rowsExample,
+      defaultImage
+    } = JSON.parse(req.body.data);
+    
+    let image = '';
+    const imageFile = req.files;
+
+    if (imageFile.image) {
+        image = imageFile.image[0].filename;
+
+        const oldImagePath = path.join(__dirname, './uploads/', defaultImage);
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath);
+        }
+    } else {
+      image = defaultImage;
+    }
+
+    
+
+    const sql = `UPDATE librarys SET 
+                  LIB_NAME = ?, 
+                  DESCRIPTION = ?, 
+                  REFERENCE = ?, 
+                  DESCRIPTIONS_OVER = ?, 
+                  DESCRIPTIONS_INS = ?, 
+                  DESCRIPTIONS_HTU = ?, 
+                  DESCRIPTIONS_EXP = ?, 
+                  DESCRIPTIONS_SGT = ?, 
+                  IMAGE = ?, 
+                  CREATE_BY = ?, 
+                  INSTALLATION = ?, 
+                  HOWTOUSE = ?, 
+                  EXAMPLE = ?
+                WHERE LIB_ID = ?`;
+
+    const params = [
+      libraryName,
+      description,
+      reference,
+      overviewDes,
+      installationDes,
+      HowToUseDes,
+      exampleDes,
+      suggestionDes,
+      image,
+      userName,
+      JSON.stringify(rowsInstallations),
+      JSON.stringify(rowsHowToUse),
+      JSON.stringify(rowsExample),
+      id
+    ];
+
+    // // Log SQL query and parameters for debugging
+    // console.log("Executing SQL Query:", sql);
+    // console.log("With Params:", params);
+
+    // Execute the query
+    db.query(sql, params, (err, response) => {
+      if (err) {
+        console.error("SQL Error:", err.message);
+        return res.status(500).json({ message: 'Database error', details: err.message });
+      }
+      res.status(200).json({
+        message: 'Library updated successfully',
+        data: response
+      });
+    });
+
+  } catch (error) {
+    console.error("Error updating library:", error);
+    res.status(500).json({ message: 'Server error', details: error.message });
   }
 });
 
@@ -193,7 +374,7 @@ app.put('/Update/Data/:id', upload, async (req, res) => {
       image = imageFile.originalname;
       fs.unlinkSync(oldImagePath);
       fs.renameSync(newImagePath, oldImagePath);
-    } else{
+    } else {
       image = imageFile.filename;
     }
     const files = req.files?.files || [];
@@ -211,7 +392,7 @@ app.put('/Update/Data/:id', upload, async (req, res) => {
         fs.unlinkSync(oldFilePath);
         fs.renameSync(newFilePath, oldFilePath);
       }
-      
+
       attrachment.push(file);
     });
     const {
@@ -266,12 +447,12 @@ app.put('/Update/Data/:id', upload, async (req, res) => {
         res.status(500).json({ message: err.message });
         return;
       }
-        res.status(200).json({
-          message: 'success',
-          data: response
-        });
+      res.status(200).json({
+        message: 'success',
+        data: response
+      });
 
-      
+
     })
   } catch (error) {
     res.status(500).json(error);
@@ -288,10 +469,10 @@ app.delete('/delete/library/:id', async (req, res) => {
         res.status(500).json({ message: err.message });
         return;
       }
-        res.status(200).json({
-          message: 'Delete success',
-          data: response
-        });
+      res.status(200).json({
+        message: 'Delete success',
+        data: response
+      });
     })
   } catch (error) {
     console.error('Error deleting Kintone record:', error);

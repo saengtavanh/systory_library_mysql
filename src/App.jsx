@@ -32,6 +32,7 @@ function App() {
       try {
         setLoading(true);
         const response = await axios.get(`${IP_ADDRESS}/`);
+        console.log(response.data);
         setRecords(response.data);
         
       } catch (error) {

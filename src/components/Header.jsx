@@ -73,7 +73,7 @@ function Header({ records }) {
                 icon: "success",
               })
               .then(() => {
-                navigate(`/DeleteLibrary?id=${id}`);
+                window.location.reload();
               });
           } catch (error) {
             console.error("Error deleting record:", error);
@@ -90,9 +90,6 @@ function Header({ records }) {
               text: "",
               icon: "error",
             })
-            .then(() => {
-              window.location.reload();
-            });
         }
         setLoading(false);
       });
