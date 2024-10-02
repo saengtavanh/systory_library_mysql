@@ -242,7 +242,7 @@ app.post('/mobile_addLibrary', upload, async (req, res) => {
                   VALUES ('${libraryName}', '${description}', '${reference}', '${overviewDes}', '${installationDes}', '${HowToUseDes}', '${exampleDes}', '${suggestionDes}', '${image}', '${userName}', '${libraryData.ATTRACHMENT}', '${libraryData.INSTALLATION}', '${libraryData.HOWTOUSE}', '${libraryData.EXAMPLE}')`;
 
 
-      db.query(sql, (err, result) => {
+      conn.query(sql, (err, result) => {
           if (err) throw err;
           res.send('Library added');
       });
@@ -327,7 +327,7 @@ app.put('/mobile_update_library/:id', upload, async (req, res) => {
     // console.log("With Params:", params);
 
     // Execute the query
-    db.query(sql, params, (err, response) => {
+    conn.query(sql, params, (err, response) => {
       if (err) {
         console.error("SQL Error:", err.message);
         return res.status(500).json({ message: 'Database error', details: err.message });
