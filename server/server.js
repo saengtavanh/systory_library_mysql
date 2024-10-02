@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 import mysql2 from 'mysql2';
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 // Enable CORS for all routes
 app.use(cors());
