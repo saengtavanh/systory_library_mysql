@@ -31,7 +31,7 @@ conn.connect((err) => {
 //todo Get all records
 app.get('/', async (req, res) => {
   try {
-    let sql = `SELECT * FROM librarys`;
+    let sql = `SELECT * FROM librarys INNER JOIN users ON librarys.CREATE_BY = users.id`;
     conn.execute(sql, (err, rows) => {
       if (err) {
         res.status(500).json({
@@ -192,71 +192,27 @@ app.post('/addLibrary', upload, async (req, res) => {
 
 app.post('/mobile_addLibrary', upload, async (req, res) => {
   try {
-      const imageFile = req.files.image[0];
-      const files = req.files?.files || [];
-      const image = imageFile ? imageFile.filename : '';
-  
-      let attrachment = [];
-      await files.forEach(item => {
-        let file = {
-          filename: item.filename,
-          originalname: item.originalname,
-          size: item.size
-        };
-        attrachment.push(file);
-      });
-      
-  
-      const {
-        userName,
-        libraryName,
-        description,
-        reference,
-        overviewDes,
-        installationDes,
-        HowToUseDes,
-        exampleDes,
-        suggestionDes,
-        rowsInstallations,
-        rowsHowToUse,
-        rowsExample,
-      } = JSON.parse(req.body.data);
-  
-      const libraryData = {
-        LIB_NAME: libraryName,
-        DESCRIPTION: description,
-        REFERENCE: reference,
-        DESCRIPTIONS_OVER: overviewDes,
-        DESCRIPTIONS_INS: installationDes,
-        DESCRIPTIONS_HTU: HowToUseDes,
-        DESCRIPTIONS_EXP: exampleDes,
-        DESCRIPTIONS_SGT: suggestionDes,
-        IMAGE: image,
-        CREATE_BY: userName,
-        ATTRACHMENT: JSON.stringify(attrachment),
-        INSTALLATION: JSON.stringify(rowsInstallations),
-        HOWTOUSE: JSON.stringify(rowsHowToUse),
-        EXAMPLE: JSON.stringify(rowsExample)
-      }
-      const sql = `INSERT INTO librarys (LIB_NAME, DESCRIPTION, REFERENCE, DESCRIPTIONS_OVER, DESCRIPTIONS_INS, DESCRIPTIONS_HTU, DESCRIPTIONS_EXP, DESCRIPTIONS_SGT, IMAGE, CREATE_BY, ATTRACHMENT, INSTALLATION, HOWTOUSE, EXAMPLE)
-                  VALUES ('${libraryName}', '${description}', '${reference}', '${overviewDes}', '${installationDes}', '${HowToUseDes}', '${exampleDes}', '${suggestionDes}', '${image}', '${userName}', '${libraryData.ATTRACHMENT}', '${libraryData.INSTALLATION}', '${libraryData.HOWTOUSE}', '${libraryData.EXAMPLE}')`;
+    // console.log('req', req.files);
 
+    // Safely retrieve image file if exists
+    const imageFile = req.files?.image?.[0];
+    const files = req.files?.files || [];
+    const image = imageFile ? imageFile.filename : '';
 
-      conn.query(sql, (err, result) => {
-          if (err) throw err;
-          res.send('Library added');
-      });
-    } catch (error) {
-      // console.error('Error:', error);
-      res.status(500).json(error);
+    let attrachment = [];
+
+    // Using a regular for-loop instead of forEach with await
+    for (let item of files) {
+      let file = {
+        filename: item.filename,
+        originalname: item.originalname,
+        size: item.size,
+      };
+      attrachment.push(file);
     }
-});
 
-app.put('/mobile_update_library/:id', upload, async (req, res) => {
-  try {
-    const { id } = req.params;
-    
-    // Parse the rest of the data from req.body.data
+    // console.log('attrachment', attrachment);
+
     const {
       userName,
       libraryName,
@@ -270,16 +226,118 @@ app.put('/mobile_update_library/:id', upload, async (req, res) => {
       rowsInstallations,
       rowsHowToUse,
       rowsExample,
-      defaultImage
     } = JSON.parse(req.body.data);
+
+    const libraryData = {
+      LIB_NAME: libraryName,
+      DESCRIPTION: description,
+      REFERENCE: reference,
+      DESCRIPTIONS_OVER: overviewDes,
+      DESCRIPTIONS_INS: installationDes,
+      DESCRIPTIONS_HTU: HowToUseDes,
+      DESCRIPTIONS_EXP: exampleDes,
+      DESCRIPTIONS_SGT: suggestionDes,
+      IMAGE: image,
+      CREATE_BY: userName,
+      ATTRACHMENT: JSON.stringify(attrachment),
+      INSTALLATION: JSON.stringify(rowsInstallations),
+      HOWTOUSE: JSON.stringify(rowsHowToUse),
+      EXAMPLE: JSON.stringify(rowsExample),
+    };
+
+    console.log('libraryData', libraryData);
+
+    const sql = `
+      INSERT INTO librarys (
+        LIB_NAME, DESCRIPTION, REFERENCE, DESCRIPTIONS_OVER, DESCRIPTIONS_INS, 
+        DESCRIPTIONS_HTU, DESCRIPTIONS_EXP, DESCRIPTIONS_SGT, IMAGE, CREATE_BY, 
+        ATTRACHMENT, INSTALLATION, HOWTOUSE, EXAMPLE
+      ) VALUES (:LIB_NAME, :DESCRIPTION, :REFERENCE, :DESCRIPTIONS_OVER, :DESCRIPTIONS_INS, :DESCRIPTIONS_HTU, :DESCRIPTIONS_EXP, :DESCRIPTIONS_SGT, :IMAGE, :CREATE_BY, :ATTRACHMENT, :INSTALLATION, :HOWTOUSE, :EXAMPLE)
+    `;
+
+    conn.query(sql, libraryData, (err, response) => {
+      if (err) throw err;
+      res.json({ message: 'Library added', data: response });
+    });
+
+    // Send a response after query succeeds
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json(error);  // Ensure only one response is sent
+  }
+});
+
+app.put('/mobile_update_library/:id', upload, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const files = req.files.files || [];
+    const imageFile = req.files;
+    
+    // Parse the rest of the data from req.body.data
+    const {
+      // userName,
+      libraryName,
+      description,
+      reference,
+      overviewDes,
+      installationDes,
+      HowToUseDes,
+      exampleDes,
+      suggestionDes,
+      rowsInstallations,
+      rowsHowToUse,
+      rowsExample,
+      defaultImage,
+      defaultFiles,
+      removedFiles
+    } = JSON.parse(req.body.data);
+
+    if(removedFiles.length > 0) {
+      removedFiles.forEach(filename => {
+        const filePath = path.join(__dirname, '../server/src/uploads/', filename);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      });
+    }
+    
+    let attrachment = [];
+
+    // Using a regular for-loop instead of forEach with await
+    if (files.length > 0) {
+      for (let item of files) {
+        let file = {
+          filename: item.filename,
+          originalname: item.originalname,
+          size: item.size,
+        };
+        attrachment.push(file);
+      }
+      if(defaultFiles.length > 0) attrachment = [...defaultFiles, ...attrachment];
+    }else {
+      if(defaultFiles.length > 0) {
+        attrachment = [...defaultFiles];
+      }else {
+        attrachment = [];
+      }
+    }
+    
+
+    // console.log('files', files);
+    // console.log('defaultFiles', defaultFiles);
+    // console.log('removedFiles', removedFiles);
+    // console.log('attrachment', attrachment);
+    
     
     let image = '';
-    const imageFile = req.files;
+    
+    // console.log('image file:', imageFile);
+    // console.log('default:', defaultImage);
 
     if (imageFile.image) {
         image = imageFile.image[0].filename;
 
-        const oldImagePath = path.join(__dirname, './uploads/', defaultImage);
+        const oldImagePath = path.join(__dirname, '../server/src/uploads/', defaultImage);
         if (fs.existsSync(oldImagePath)) {
           fs.unlinkSync(oldImagePath);
         }
@@ -299,7 +357,7 @@ app.put('/mobile_update_library/:id', upload, async (req, res) => {
                   DESCRIPTIONS_EXP = ?, 
                   DESCRIPTIONS_SGT = ?, 
                   IMAGE = ?, 
-                  CREATE_BY = ?, 
+                  ATTRACHMENT = ?, 
                   INSTALLATION = ?, 
                   HOWTOUSE = ?, 
                   EXAMPLE = ?
@@ -315,14 +373,14 @@ app.put('/mobile_update_library/:id', upload, async (req, res) => {
       exampleDes,
       suggestionDes,
       image,
-      userName,
+      JSON.stringify(attrachment),
       JSON.stringify(rowsInstallations),
       JSON.stringify(rowsHowToUse),
       JSON.stringify(rowsExample),
       id
     ];
 
-    // // Log SQL query and parameters for debugging
+    // Log SQL query and parameters for debugging
     // console.log("Executing SQL Query:", sql);
     // console.log("With Params:", params);
 
